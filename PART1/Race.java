@@ -138,11 +138,15 @@ public class Race
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also will depends exponentially on confidence 
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
+            if (Math.random() < (0.05*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
+                double confidence = theHorse.getConfidence();
+                String rounded = String.format("%.2f",confidence-0.1);
+                theHorse.setConfidence(Double.parseDouble(rounded));
+                
             }
-        }
+        } 
     }
         
     /** 
@@ -168,7 +172,8 @@ public class Race
      */
     private void printRace()
     {
-        System.out.print('\u000C');  //clear the terminal window
+        System.out.print("\033[H\033[2J");  //clear the terminal window
+        System.out.flush(); //clear the terminal window
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
@@ -209,7 +214,7 @@ public class Race
         //else print the horse's symbol
         if(theHorse.hasFallen())
         {
-            System.out.print('\u2322');
+            System.out.print('X');
         }
         else
         {
@@ -219,8 +224,18 @@ public class Race
         //print the spaces after the horse
         multiplePrint(' ',spacesAfter);
         
-        //print the | for the end of the track
-        System.out.print('|');
+        //print the | for the end of the track followed by the name of the horse and its confidence
+        String message;
+        if (theHorse.hasFallen())
+        {
+            message = ((theHorse.getName().toUpperCase())+" (Current Confidence: "+theHorse.getConfidence()+") OUT OF RACE");
+        }
+        else
+        {
+            message = ((theHorse.getName().toUpperCase())+" (Current Confidence: "+theHorse.getConfidence()+")");
+        }
+        
+        System.out.println("|   "+message); 
     }
         
     
