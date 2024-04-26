@@ -53,7 +53,8 @@ public class GUI extends JFrame{
         menuBar.add(statsMenu);
         menuBar.add(betMenu);
         add(menuBar);
-
+        
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////RACE  PANEL//////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +70,7 @@ public class GUI extends JFrame{
         titleRacePanel.setFont(new Font("Arial", Font.BOLD, 20));
         titleRacePanel.setBounds(20, 10, 400, 50);
         racePanel.add(titleRacePanel);
-
+        
         //race panel text area
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
@@ -91,6 +92,7 @@ public class GUI extends JFrame{
         System.setOut(printStream); // Redirect System.out to the text area
         
         add(racePanel); //add race panel to frame
+
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,7 +205,6 @@ public class GUI extends JFrame{
         JButton start = new JButton("Save");
         start.setBounds(780, 120, 100, 50);
         horsePanel.add(start);
-        
         submit.addActionListener(new ActionListener() {
             @Override
             
@@ -256,6 +257,7 @@ public class GUI extends JFrame{
                 horsePanel.repaint(); 
             }
         });
+        
         start.addActionListener(new ActionListener() { // Save button action listener
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -449,6 +451,7 @@ public class GUI extends JFrame{
                     }
                 } 
             } // END of processValues method
+
             public void customiseHorses(Horse[] horsesArray, Race race) {
                 // Create a new empty frame for horse customization and layout
                 JFrame customizeFrame = new JFrame("Horse Customization");
@@ -592,9 +595,305 @@ public class GUI extends JFrame{
                     }
                 }
                 customizeFrame.setVisible(true);
-            }
+            } // END of customiseHorses method   
         }); // END of start button action listener
-    }
 
-    
+        // Add the horse panel to the frame
+        add(horsePanel);
+
+        //view horses menu item action listener
+        viewHorses.addActionListener(e -> {
+            // Create a new empty frame for viewing horses and layout
+            JFrame viewHorsesFrame = new JFrame("Horses:");
+            viewHorsesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+            viewHorsesFrame.setSize(1030, 220);
+            viewHorsesFrame.setVisible(true);
+            viewHorsesFrame.setLayout(null);
+            viewHorsesFrame.setBackground(new Color(0xFFE5B4));
+            
+            // if no horses are entered then they cant be viewed
+            if (horsesEntered==false){
+                JOptionPane.showMessageDialog(null, "Please enter horses before viewing them.");
+                viewHorsesFrame.dispose();
+            }
+
+            // Loop through the horses array
+            for (int i=0; i<horsesArray.length; i++){
+                Horse h = horsesArray[i];
+                if (h == null) {
+                    continue;
+                } else {
+                    // Create labels for the horse customization
+                    JPanel viewItem= new JPanel(); 
+                    viewItem.setLayout(null);
+                    viewItem.setBounds(20+(i*200), 10, 180, 170);
+                    viewItem.setFont(new Font("Arial", Font.BOLD, 15));
+                    viewItem.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    viewItem.setBackground(Color.GRAY);
+                    viewHorsesFrame.add(viewItem);
+                    JLabel horseNumber= new JLabel("Horse " + (i+1));
+                    horseNumber.setForeground(Color.WHITE);
+                    horseNumber.setBounds(20, 10, 800, 30);
+
+                    JLabel horseName = new JLabel("Name: " + h.getName());
+                    horseName.setBounds(20, 30, 800, 30);
+                    horseName.setForeground(Color.WHITE);
+
+                    JLabel horseSymbol = new JLabel("Symbol: " + h.getSymbol());
+                    horseSymbol.setBounds(20, 50, 800, 30);
+                    horseSymbol.setForeground(Color.WHITE);
+
+                    JLabel horseConfidence = new JLabel("Confidence: " + h.getConfidence());
+                    horseConfidence.setBounds(20, 70, 800, 30);
+                    horseConfidence.setForeground(Color.WHITE);
+
+                    JLabel horseColour = new JLabel("Colour: " + h.getColour());
+                    horseColour.setBounds(20, 90, 800, 30);
+                    horseColour.setForeground(Color.WHITE);
+
+                    JLabel horseAccessory = new JLabel("Accessory: " + h.getAccesory());
+                    horseAccessory.setBounds(20, 110, 800, 30);
+                    horseAccessory.setForeground(Color.WHITE);
+
+                    JLabel horseBreed = new JLabel("Breed: " + h.getBreed());
+                    horseBreed.setBounds(20, 130, 800, 30);
+                    horseBreed.setForeground(Color.WHITE);
+
+                    // Add the components to the frame
+                    viewItem.add(horseNumber);
+                    viewItem.add(horseName);
+                    viewItem.add(horseSymbol);
+                    viewItem.add(horseConfidence);
+                    viewItem.add(horseColour);
+                    viewItem.add(horseAccessory);
+                    viewItem.add(horseBreed);
+
+                }
+            }
+        }); // END of viewHorses action listener
+        statsItem.addActionListener(e -> {
+            // Create a new empty frame for statistics and layout
+            JFrame statsFrame = new JFrame("Statistics");
+            statsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+            statsFrame.setSize(1040, 200);
+            statsFrame.setVisible(true);
+            statsFrame.setLayout(null);
+            statsFrame.setBackground(new Color(0xFFE5B4));
+            // loop through the horses array
+            for (int i=0; i<horsesArray.length; i++) {
+                if (horsesArray[i] == null) {
+                    continue;
+                } else {
+                    // Create labels for the horse customization 
+                    JPanel statItem= new JPanel(); 
+                    statItem.setLayout(null);
+                    statItem.setBounds(20+(i*200), 10, 180, 140);
+                    statItem.setFont(new Font("Arial", Font.BOLD, 15));
+                    statItem.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    statItem.setBackground(Color.GRAY);
+                    statsFrame.add(statItem);
+
+                    JLabel horseName = new JLabel("Horse " + (i+1) + ": " + horsesArray[i].getName());
+                    horseName.setBounds(20, 10, 200, 30);
+                    horseName.setForeground(Color.WHITE);
+                    statItem.add(horseName);
+                    JLabel horseDistance = new JLabel("Distance travelled: " + horsesArray[i].getDistanceTravelled());
+                    horseDistance.setBounds(20, 30, 200, 30);
+                    horseDistance.setForeground(Color.WHITE);
+                    statItem.add(horseDistance);
+
+                    JLabel horseFallen = new JLabel("Has fallen: " + horsesArray[i].hasFallen());
+                    horseFallen.setBounds(20, 50, 200, 30);
+                    horseFallen.setForeground(Color.WHITE);
+                    statItem.add(horseFallen);
+
+                    JLabel horseConfidence = new JLabel("Confidence: " + horsesArray[i].getConfidence());
+                    horseConfidence.setBounds(20, 70, 200, 30);
+                    horseConfidence.setForeground(Color.WHITE);
+                    statItem.add(horseConfidence);
+
+                    double speed = Double.parseDouble(String.format("%.2f", horsesArray[i].getConfidence() * horsesArray[i].getDistanceTravelled()));
+                    JLabel horseSpeed = new JLabel("Speed: " + speed+" m/s");
+                    horseSpeed.setBounds(20, 90, 200, 30);
+                    horseSpeed.setForeground(Color.WHITE);
+                    statItem.add(horseSpeed);
+
+                }
+            }  
+        }); // END of statsItem action listener
+
+        betItem.addActionListener(e -> {
+            // Create a new empty frame for betting and layout
+            JFrame betFrame = new JFrame("Virtual Betting");
+            betFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+            betFrame.setSize(600, 400);
+
+            //if no horses are entered then they cant be bet on
+            if (horsesEntered==false){
+                JOptionPane.showMessageDialog(null, "Please enter horses before placing a bet.");
+                betFrame.dispose();
+            } else if (raceEnded==false) {
+                //layout for the bet frame and show it
+                betFrame.setVisible(true);
+                betFrame.setLayout(null);
+                betFrame.setBackground(new Color(0xFFE5B4));
+
+                // Create a new panel for the betting
+                JPanel betPanel = new JPanel();
+                betPanel.setLayout(null);
+                betPanel.setBounds(10, 10, 580, 380);
+                betPanel.setFont(new Font("Arial", Font.BOLD, 15));
+                betPanel.setBackground(Color.GRAY);
+                betFrame.add(betPanel);
+            
+                // Create labels for the betting
+                JLabel titleBet = new JLabel("Place a bet on the winning horse:");
+                titleBet.setBounds(20, 10, 400, 50);
+                betPanel.add(titleBet);
+                titleBet.setFont(new Font("Arial", Font.BOLD, 20));
+
+                JLabel horseToBet = new JLabel("Horse to bet on: ");
+                horseToBet.setBounds(20, 80, 200, 30);
+                betPanel.add(horseToBet);
+
+                JTextField horseToBetField = new JTextField();
+                horseToBetField.setBounds(200, 80, 200, 30);
+                betPanel.add(horseToBetField);
+
+                JButton check = new JButton("Check");
+                check.setBounds(420, 80, 100, 30);
+                betPanel.add(check);
+
+                // Check if the horse is valid
+                check.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String horseToBetName = horseToBetField.getText();
+                        boolean validHorse = false;
+                        for (int i=0; i<horsesArray.length; i++) {
+                            if (horsesArray[i] == null) {
+                                continue;
+                            } else {
+                                if (horsesArray[i].getName().equals(horseToBetName)) {
+                                    validHorse = true;
+                                    break;
+                                }
+                            }
+                        }
+                        // If the horse is valid, allow the user to enter the amount to bet
+                        if (validHorse) {
+                            JTextField betAmount = new JTextField();
+                            betAmount.setBounds(200, 120, 200, 30);
+                            betPanel.add(betAmount);
+                            JLabel betAmountLabel = new JLabel("Amount to bet: ");
+                            betAmountLabel.setBounds(20, 120, 200, 30);
+                            betPanel.add(betAmountLabel);
+                            JButton submitBet = new JButton("Submit");
+                            submitBet.setBounds(420, 120, 100, 30);
+                            betPanel.add(submitBet);
+                            betPanel.revalidate();
+                            betPanel.repaint();
+
+                            // Submit the bet
+                            submitBet.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    try {
+                                        double amount = Double.parseDouble(betAmount.getText());
+                                        if (amount <= 0) {
+                                            JOptionPane.showMessageDialog(null, "Please enter a valid amount to bet.");
+                                        } else {
+                                            int position =0;
+                                            for (int i=0; i<horsesArray.length; i++) {
+                                                if (horsesArray[i] == null) {
+                                                    continue;
+                                                } else {
+                                                    if (horsesArray[i].getName().equals(horseToBetName)) {
+                                                        position = i;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            // Calculate the winnings, multiplier based on the amount bet
+                                            int multiplier =0;
+                                            if (amount<=10){
+                                                multiplier =1; 
+                                            } else if (amount <=50){
+                                                multiplier =2;
+                                            } else {
+                                                multiplier =3;
+                                            }
+
+                                            
+                                            double c = (horsesArray[position].getConfidence())+multiplier; //confidence of the horse with the multiplier
+
+                                            // Create labels for the betting and output the results
+                                            JLabel coeficient = new JLabel("Coeficient: " + c);
+                                            coeficient.setBounds(20, 160, 200, 30);
+                                            betPanel.add(coeficient);
+                                            JLabel winnings = new JLabel("Winnings would be: " + (amount*c));
+                                            winnings.setBounds(20, 190, 200, 30);
+                                            JLabel betPlaced = new JLabel("Bet placed on: " + horseToBetName + " for " + amount + " dollars. Enjoy the race, come back when it is done.");
+
+                                            // Set the bet placed and winnings
+                                            horseBetOn = position;
+                                            betWinnings = amount*c;
+
+                                            // Add the components to the frame
+                                            betPlaced.setBounds(20, 220, 600, 30);
+                                            betPanel.add(betPlaced);
+                                            betPanel.add(winnings);
+                                            betPanel.revalidate();
+                                            betPanel.repaint();
+                                        }
+                                    } catch (NumberFormatException e1) {
+                                        JOptionPane.showMessageDialog(null, "Please enter a valid amount to bet.");
+                                    }
+                                }
+                            });
+                        } else { // If the horse is not valid, show an error message
+                            JOptionPane.showMessageDialog(null, "Horse is not valid.");
+                        }
+                    }
+                }); // END of check action listener
+                // if the race has ended results of the bet can be shown
+            } else if (raceEnded==true) { 
+                // Create a new empty frame for betting results and layout
+                betFrame.setVisible(true);
+                betFrame.setLayout(null);
+                betFrame.setBackground(new Color(0xFFE5B4));
+                JPanel betPanel = new JPanel();
+                betPanel.setLayout(null);
+                betPanel.setBounds(10, 10, 580, 380);
+                betPanel.setFont(new Font("Arial", Font.BOLD, 15));
+                betPanel.setBackground(Color.GRAY);
+                betFrame.add(betPanel);
+                
+                // Create labels for the betting results
+                JLabel titleBet = new JLabel("The Race is over!");
+                titleBet.setBounds(20, 10, 400, 50);
+                betPanel.add(titleBet);
+                titleBet.setFont(new Font("Arial", Font.BOLD, 20));
+                JLabel name = new JLabel("You bet on: " + horsesArray[horseBetOn].getName());
+                name.setBounds(20, 40, 200, 30);
+                betPanel.add(name);
+                JLabel winnings = new JLabel("You bet: " + betWinnings);
+                winnings.setBounds(20, 70, 200, 30);
+                betPanel.add(winnings);
+                if (horsesArray[horseBetOn].getDistanceTravelled()==raceDistance){
+                    JLabel result = new JLabel("You won the bet!");
+                    result.setBounds(20, 100, 200, 30);
+                    betPanel.add(result);
+                } else {
+                    JLabel result = new JLabel("You lost the bet!");
+                    result.setBounds(20, 100, 200, 30);
+                    betPanel.add(result);
+                }
+                //update the panel
+                betPanel.revalidate();
+                betPanel.repaint();
+            }
+        }); // END of betItem action listener
+    }
 }
