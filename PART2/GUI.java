@@ -256,6 +256,199 @@ public class GUI extends JFrame{
                 horsePanel.repaint(); 
             }
         });
+        start.addActionListener(new ActionListener() { // Save button action listener
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (trackSelected==true){
+                    processValues();
+                }
+            }
+
+            public void processValues() { // Process the values entered by the user
+                //flags for validation
+                boolean validName = false;
+                boolean validConfidence = false;
+                boolean validSymbol = false;
+                boolean validLane = false;
+
+                // Get the values from the sliders
+                int horses = sliderHorses.getValue();
+                int distance = sliderLength.getValue();
+                int lanes = sliderLanes.getValue();
+
+                // Create a race instance
+                Race race = new Race(distance, horses, lanes); 
+
+                // Create arrays to store the values of the horses
+                boolean[] validHorse = new boolean[horses];
+                String[] horseNames = new String[horses];
+                double[] horseConfidences = new double[horses];
+                char[] horseSymbols = new char[horses];
+                int[] horseLanes = new int[horses];
+
+                // Loop through the number of horses, validating the values entered
+                for (int i=0; i<horses; i++) { 
+                    if (validName==false || validConfidence==false || validSymbol==false || validLane==false){  //if any of the values are invalid, set the flag to false
+                        //name validation
+                        try{ 
+                            horseNames[i] = horseTempFields[i].getText();
+                            if (horseNames[i].equals("")){
+                                horseTempFields[i].setText("");
+                                horseTempFields[i].setBackground(Color.RED);
+                                validName = false;
+                            } else {
+                                validName = true;
+                                horseTempFields[i].setBackground(Color.WHITE);
+                            } 
+                        } catch (NullPointerException e) {
+                            horseTempFields[i].setText("");
+                            horseTempFields[i].setBackground(Color.RED);
+                            validName = false;
+                        }
+                        //confidence validation
+                        try{
+                            horseConfidences[i] = Double.parseDouble(horseTempConfidenceFields[i].getText());
+                            if (horseConfidences[i]<=0 || horseConfidences[i]>1){
+                                horseTempConfidenceFields[i].setText("");
+                                horseTempConfidenceFields[i].setBackground(Color.RED);
+                                validConfidence = false;
+                            } else {
+                                validConfidence = true;
+                                horseTempConfidenceFields[i].setBackground(Color.WHITE);
+                            }
+                        } catch (NumberFormatException e) {
+                            validConfidence = false;
+                            horseTempConfidenceFields[i].setText("");
+                            horseTempConfidenceFields[i].setBackground(Color.RED);
+                        }
+                        //symbol validation
+                        try{
+                            horseSymbols[i] = horseTempSymbolFields[i].getText().charAt(0);
+                            if (horseSymbols[i]==' '){
+                                validSymbol = false;
+                                horseTempSymbolFields[i].setText("");
+                                horseTempSymbolFields[i].setBackground(Color.RED);
+                            } else {
+                                horseTempSymbolFields[i].setBackground(Color.WHITE);
+                                validSymbol = true;
+                            }
+                        } catch (StringIndexOutOfBoundsException e) {
+                            validSymbol = false;
+                            horseTempSymbolFields[i].setText("");
+                            horseTempSymbolFields[i].setBackground(Color.RED);
+                        } 
+                        //lane validation
+                        try{
+                            horseLanes[i] = Integer.parseInt(horseTempLaneFields[i].getText());
+                            if (horseLanes[i]>lanes || horseLanes[i]<=0){
+                                validLane = false;
+                                horseTempLaneFields[i].setText("");
+                                horseTempLaneFields[i].setBackground(Color.RED);
+                            } else {
+                                validLane = true;
+                                horseTempLaneFields[i].setBackground(Color.WHITE);
+                            }
+                        } catch (NumberFormatException e) {
+                            
+                            validLane = false;
+                            horseTempLaneFields[i].setText("");
+                            horseTempLaneFields[i].setBackground(Color.RED);
+                        }
+
+                        // If all values are valid, set the flag to true
+                        if (validName && validConfidence && validSymbol && validLane) {
+                            validHorse[i] = true;
+                        }
+
+                        // If any of the values are invalid, set the flag to false, move onto next horse with all false to check again
+                        validName =false; 
+                        validConfidence =false;
+                        validSymbol =false;
+                        validLane =false;
+                    }  else {
+                        validHorse[i] = true;
+                    }
+                }
+
+                // Check if all horses are valid
+                boolean allHorsesValid = true;
+                for (int i = 0; i < horses; i++) {
+                    if (!validHorse[i]) {
+                        allHorsesValid = false;
+                        break;
+                    }
+                }
+
+                // If all horses are valid and reset the text fields
+                if (allHorsesValid && !customized){
+                    JOptionPane.showMessageDialog(null, "All horses are valid");
+                    horsesEntered = true;
+                    for (int j=0; j<horses; j++) {
+                        horseTempFields[j].setBackground(Color.WHITE);
+                        horseTempConfidenceFields[j].setBackground(Color.WHITE);
+                        horseTempSymbolFields[j].setBackground(Color.WHITE);
+                        horseTempLaneFields[j].setBackground(Color.WHITE);
+                    }
+                } else if (!allHorsesValid) {
+                    JOptionPane.showMessageDialog(null, "Please enter valid values for all horses, see help for more information.");
+                }
+
+                // Add the horses
+                int horsesAdded = 0;
+                if (horsesEntered==true){
+                    if (!customized){ //cant add horses after theyve been customised, only bfeore
+                        for (int j=1; j<=lanes; j++) {
+                            for (int k=0; k<horses; k++) {
+                                if (horseLanes[k] == j) {
+                                    Horse h = new Horse(horseSymbols[k], horseNames[k], horseConfidences[k]);
+                                    horsesArray[horsesAdded] = h;
+                                    horsesAdded++;
+                                    race.addHorse(h, j);
+                                } 
+                            }
+                        }
+
+                        //customise button
+                        JButton customizeButton = new JButton("Customize");
+                        customizeButton.setBounds(780, 50, 100, 50);
+
+                        //add the customize button to the horse panel if horses have been entered
+                        if (horsesEntered==true){
+                            horsePanel.add(customizeButton);
+                            horsePanel.revalidate();
+                            horsePanel.repaint();
+                            customizeButton.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    customiseHorses(horsesArray, race);
+                                    horsePanel.revalidate();
+                                    horsePanel.repaint();
+                                }
+                            });
+
+                            //start button for the race
+                            JButton startTheRace = new JButton("Start");
+                            startTheRace.setBounds(780, 190, 100, 50);
+                            horsePanel.add(startTheRace);
+                            horsePanel.revalidate();
+                            horsePanel.repaint();
+                            startTheRace.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    if (!customized){
+                                        JOptionPane.showMessageDialog(null, "Please customize the horses before starting.");
+                                    } else {
+                                        Thread raceThread = new Thread(() -> {
+                                        raceEnded = race.startRace(textArea); });
+                                        raceThread.start();
+                                        raceEnded = true; //race has ended after it is executed, betting can be accessed
+                                    }
+                                };
+                            });
+                        }                       
+                    }
+                } 
+            } // END of processValues method
     }
 
     
