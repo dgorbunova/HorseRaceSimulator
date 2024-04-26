@@ -42,6 +42,22 @@ public class GUI extends JFrame{
         menuBar.add(statsMenu);
         menuBar.add(betMenu);
         add(menuBar);
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////RACE  PANEL//////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //race panel layout 
+        racePanel.setLayout(null);
+        racePanel.setBackground(Color.WHITE); 
+        racePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        racePanel.setBounds(0, 10, 700, 600); 
+
+        //race panel title
+        JLabel titleRacePanel = new JLabel("The Race:");
+        titleRacePanel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleRacePanel.setBounds(20, 10, 400, 50);
+        racePanel.add(titleRacePanel);
         
     }
 }
