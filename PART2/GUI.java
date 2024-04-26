@@ -895,5 +895,11 @@ public class GUI extends JFrame{
                 betPanel.repaint();
             }
         }); // END of betItem action listener
-    }
-}
+        // main frame layout
+        this.setSize(1000, 900);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Track Settings");
+        this.setVisible(true);
+        this.setLocationRelativeTo(null); // Center the frame on the screen
+    } // END of GUI constructor
+} // END of GUI class
