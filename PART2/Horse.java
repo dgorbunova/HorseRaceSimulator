@@ -103,7 +103,7 @@ public class Horse
     public String getAccesory()
     {
         return this.accesory;
-    }
+    } 
 
     
     
