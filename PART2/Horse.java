@@ -15,6 +15,7 @@ public class Horse
     private double confidence;
     private String colour;
     private String accesory;
+    private String breed;
 
     
     
@@ -30,6 +31,7 @@ public class Horse
         this.hasFallen = false;
         this.colour=null;
         this.accesory=null;
+        this.breed = null;
        
     }
     
@@ -106,7 +108,15 @@ public class Horse
     {
         return this.accesory;
     }
-    
-    
+
+    public void setBreed(String newBreed)
+    {
+        this.breed = newBreed;
+    }
+
+    public String getBreed()
+    {
+        return this.breed;
+    }
     
 }
