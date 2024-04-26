@@ -449,6 +449,151 @@ public class GUI extends JFrame{
                     }
                 } 
             } // END of processValues method
+            public void customiseHorses(Horse[] horsesArray, Race race) {
+                // Create a new empty frame for horse customization and layout
+                JFrame customizeFrame = new JFrame("Horse Customization");
+                customizeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                customizeFrame.setSize(900, 600);
+                customizeFrame.setLayout(null);
+                customizeFrame.setBackground(new Color(0xFFE5B4));
+               
+                // Loop through the horses array
+                for (int i = 0; i < horsesArray.length; i++) {
+                    if (horsesArray[i] == null) {
+                        continue;
+                    } else {
+                        Horse current = horsesArray[i];
+
+                        // Create labels for the horse customization
+                        JLabel horseCurrent = new JLabel("Horse " + (i + 1) + ": ");
+                        horseCurrent.setBounds(20, 10 + (i * 100), 100, 30);
+                        JLabel horseNameLabel = new JLabel("Name: " + (current.getName())); //name
+                        horseNameLabel.setBounds(20, 30 + (i * 100), 200, 30);
+                        JLabel horseSymbolLabel = new JLabel("Symbol: " + (current.getSymbol())); //symbol
+                        horseSymbolLabel.setBounds(20, 50 + (i * 100), 100, 30);
+                        JLabel horseColorLabel = new JLabel("Color: "); //color label
+                        horseColorLabel.setBounds(150, 5, 100, 30);
+                        JLabel horseAccLabel = new JLabel("Accessory: "); //accessory label
+                        horseAccLabel.setBounds(400, 5, 100, 30);
+                        JLabel horseBreedLabel= new JLabel("Breed: "); //accessory label
+                        horseBreedLabel.setBounds(650, 5, 100, 30);
+            
+                        // Create sliders for the color and accessory
+                        JSlider sliderColor = new JSlider(JSlider.HORIZONTAL, 0, 2, 0); // Assuming 3 options (0, 1, 2)
+                        sliderColor.setMajorTickSpacing(1);
+                        sliderColor.setPaintTicks(true);
+                        sliderColor.setPaintLabels(true);
+                        sliderColor.setSnapToTicks(true);
+                        sliderColor.setBounds(150, 30 + (i * 100), 200, 50);
+                        horseTempSliderColor[i] = sliderColor;
+
+                        // Create labels for the slider colour
+                        Hashtable<Integer, JLabel> labelTableColor = new Hashtable<>();
+                        labelTableColor.put(0, new JLabel("Black"));
+                        labelTableColor.put(1, new JLabel("Dun"));
+                        labelTableColor.put(2, new JLabel("Bay"));
+                        sliderColor.setLabelTable(labelTableColor);
+                        
+
+                        // Create sliders for the accessory
+                        JSlider sliderAccessory = new JSlider(JSlider.HORIZONTAL, 0, 1, 0); // Assuming 3 options (0, 1, 2)
+                        sliderAccessory.setMajorTickSpacing(1);
+                        sliderAccessory.setPaintTicks(true);
+                        sliderAccessory.setPaintLabels(true);
+                        sliderAccessory.setSnapToTicks(true);
+                        sliderAccessory.setBounds(400, 30 + (i * 100), 200, 50);
+                        horseTempSliderAccessory[i] = sliderAccessory;
+
+                         // Create labels for the slider
+                        Hashtable<Integer, JLabel> labelTableAccessory = new Hashtable<>();
+                        labelTableAccessory.put(0, new JLabel("Hat"));
+                        labelTableAccessory.put(1, new JLabel("Saddle"));
+                        sliderAccessory.setLabelTable(labelTableAccessory);
+                         
+
+                        // Create text fields for the breed
+                        JTextField breedField = new JTextField();
+                        breedField.setBounds(650,  30 + (i * 100), 200, 30);
+                        horseTempBreedFields[i] = breedField;
+
+                        // Add the components to the frame
+                        customizeFrame.add(sliderColor);
+                        customizeFrame.add(sliderAccessory);
+                        customizeFrame.add(horseColorLabel);
+                        customizeFrame.add(horseNameLabel);
+                        customizeFrame.add(horseSymbolLabel);
+                        customizeFrame.add(horseCurrent);
+                        customizeFrame.add(horseAccLabel); 
+                        customizeFrame.add(horseBreedLabel);
+                        customizeFrame.add(breedField);
+                       
+                        // Create a save button
+                        JButton saveButton = new JButton("Save");
+                        saveButton.setBounds(400, 500, 100, 30);
+                        customizeFrame.add(saveButton);
+
+                        // Create arrays to store the choices
+                        String[] colourChoice = new String[horsesArray.length];
+                        String[] accessoryChoice = new String[horsesArray.length];  
+
+                        
+                        saveButton.addActionListener(new ActionListener() {
+                            @Override
+                                public void actionPerformed(ActionEvent e) {
+                                // Loop through the horses array                
+                                for (int j=0; j<horsesArray.length; j++) {
+                                    if (horsesArray[j] == null) {
+                                        continue;
+                                    } else {
+                                        int valueColor = horseTempSliderColor[j].getValue();
+                                        switch (valueColor) {
+                                            case 0:
+                                                colourChoice[j] = "Black";
+                                                break;
+                                            case 1:
+                                                colourChoice[j] = "Dun";
+                                                break;
+                                            case 2:
+                                                colourChoice[j] = "Bay";
+                                                break;
+                                        }
+                                        int valueAccessory = horseTempSliderAccessory[j].getValue();
+                                        switch (valueAccessory) {
+                                            case 0:
+                                                accessoryChoice[j] = "Hat";
+                                                break;
+                                            case 1:
+                                                accessoryChoice[j] = "Saddle";
+                                                break;
+                                        }
+                                    
+                                        Horse h = horsesArray[j];
+                                        h.setAccesory(accessoryChoice[j]);
+                                        h.setColour(colourChoice[j]);
+                                        try{
+                                            String breed = horseTempBreedFields[j].getText();
+                                            if (breed.equals("")){
+                                                horseTempBreedFields[j].setText("");
+                                                horseTempBreedFields[j].setBackground(Color.RED);
+                                            } else {
+                                                h.setBreed(breed);
+                                            }
+                                        } catch (NullPointerException e1) {
+                                            horseTempBreedFields[j].setText("");
+                                        }
+                                        
+                                    }
+                                }
+                                JOptionPane.showMessageDialog(null, "Horse customization saved. Please click start to being.");
+                                customizeFrame.dispose();
+                                customized = true;
+                            }
+                        });
+                    }
+                }
+                customizeFrame.setVisible(true);
+            }
+        }); // END of start button action listener
     }
 
     
