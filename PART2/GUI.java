@@ -204,6 +204,58 @@ public class GUI extends JFrame{
         start.setBounds(780, 120, 100, 50);
         horsePanel.add(start);
         
+        submit.addActionListener(new ActionListener() {
+            @Override
+            
+            public void actionPerformed(ActionEvent e) {
+                getSliderValues();
+            }
+
+            public void getSliderValues() {
+                int horses = sliderHorses.getValue();
+                int length = sliderLength.getValue();
+                raceDistance = length;
+                trackSelected = true;
+                
+                for (int i=0; i<horses; i++) { // Loop through the number of horses, adding labels and text fields
+                    JLabel horseInput = new JLabel("Horse " + (i+1) + ": "); 
+                    horseInput.setBounds(20, 50 + (i * 40), 100, 30);  //horse label
+                    horseTemp = new JTextField();
+                    horseTemp.setBounds(100, 50 + (i * 40), 100, 30);  //horse textfield
+                    horseTempFields[i] = horseTemp;
+                    JLabel horseConfidence = new JLabel("Confidence: ");
+                    horseConfidence.setBounds(250, 50 + (i * 40), 150, 30); //confidence label
+                    horseTempConfidence = new JTextField();
+                    horseTempConfidenceFields[i] = horseTempConfidence;
+                    horseTempConfidence.setBounds(350, 50 + (i * 40), 50, 30); //confidence textfield
+                    JLabel horseSymbol = new JLabel("Symbol: ");
+                    horseSymbol.setBounds(450, 50 + (i * 40), 100, 30); //symbol label
+                    horseTempSymbol = new JTextField();
+                    horseTempSymbolFields[i] = horseTempSymbol;
+                    horseTempSymbol.setBounds(550, 50 + (i * 40), 50, 30); //symbol textfield
+                    JLabel horseLane = new JLabel("Lane: ");
+                    horseLane.setBounds(650, 50 + (i * 40), 100, 30); //lane label
+                    horseTempLane = new JTextField();
+                    horseTempLaneFields[i] = horseTempLane;
+                    horseTempLane.setBounds(700, 50 + (i * 40), 50, 30); //lane textfield
+
+                    // add the components to the horse panel
+                    horsePanel.add(horseInput);
+                    horsePanel.add(horseTemp);
+                    horsePanel.add(horseConfidence);
+                    horsePanel.add(horseTempConfidence);
+                    horsePanel.add(horseSymbol);
+                    horsePanel.add(horseTempSymbol); 
+                    horsePanel.add(horseLane);
+                    horsePanel.add(horseTempLane);
+                    
+                
+                }
+                // revalidate and repaint the horse panel, updating it with the new components
+                horsePanel.revalidate(); 
+                horsePanel.repaint(); 
+            }
+        });
     }
 
     
