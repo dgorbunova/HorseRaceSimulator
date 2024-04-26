@@ -58,6 +58,28 @@ public class GUI extends JFrame{
         titleRacePanel.setFont(new Font("Arial", Font.BOLD, 20));
         titleRacePanel.setBounds(20, 10, 400, 50);
         racePanel.add(titleRacePanel);
+
+        //race panel text area
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setBounds(5, 150, 690, 200);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
+        textArea.setAutoscrolls(true);
+        racePanel.add(textArea);
+
+        //print stream to print to text area
+        PrintStream printStream = new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) {
+                textArea.append(String.valueOf((char) b));
+                textArea.setCaretPosition(textArea.getDocument().getLength());
+            }
+        });
+        System.setOut(printStream); // Redirect System.out to the text area
+        
+        add(racePanel); //add race panel to frame
         
     }
 }
