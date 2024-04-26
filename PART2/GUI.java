@@ -173,6 +173,36 @@ public class GUI extends JFrame{
         // add track panel to frame
         add(trackPanel);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////HORSE SETTINGS PANEL/////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        // Declare the components for the horse panel
+        JTextField[] horseTempFields = new JTextField[5];
+        JTextField[] horseTempConfidenceFields = new JTextField[5];
+        JTextField[] horseTempSymbolFields = new JTextField[5];
+        JTextField[] horseTempLaneFields = new JTextField[5];
+        JSlider[] horseTempSliderColor = new JSlider[5];
+        JSlider[] horseTempSliderAccessory = new JSlider[5];
+        JTextField[] horseTempBreedFields = new JTextField[5];
+        
+        //horse panel layout
+        horsePanel.setLayout(null);
+        horsePanel.setBounds(0, 600, 1000, 250);
+        horsePanel.setBackground(new Color(0xFFE5B4)); 
+        horsePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        //horse panel title
+        JLabel titleHorsePanel = new JLabel("Horse Settings:");
+        titleHorsePanel.setBounds(20, 10, 400, 50);
+        horsePanel.add(titleHorsePanel);
+        titleHorsePanel.setFont(new Font("Arial", Font.BOLD, 20));
+        horsePanel.add(titleHorsePanel); 
+        
+        //save button
+        JButton start = new JButton("Save");
+        start.setBounds(780, 120, 100, 50);
+        horsePanel.add(start);
         
     }
 
