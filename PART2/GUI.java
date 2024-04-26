@@ -9,7 +9,18 @@ import java.util.Hashtable;
 
 
 public class GUI extends JFrame{
-    
+    JTextField lane, horses, horseTemp, horseTempConfidence, horseTempSymbol, horseTempLane;
+    JButton start, submit;
+    JMenuBar menuBar;
+    public static boolean trackSelected = false;
+    public static boolean customized = false;
+    public static boolean horsesEntered = false;
+    public static Horse[] horsesArray = new Horse[5];
+    public static int horseBetOn = -1;
+    public static double betWinnings = 0;
+    public static boolean betPlaced = false;
+    public static boolean raceEnded = false;
+    public static int raceDistance =-1;
     
     /**
      * 
@@ -80,6 +91,90 @@ public class GUI extends JFrame{
         System.setOut(printStream); // Redirect System.out to the text area
         
         add(racePanel); //add race panel to frame
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////TRACK SETTINGS PANEL/////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        // track panel layout
+        trackPanel.setLayout(null);
+        trackPanel.setBounds(700, 10, 300, 600);
+        trackPanel.setBackground(new Color(0xF5F5DC)); 
+
+        // track panel title
+        JLabel titleTrackPanel = new JLabel("Track Settings:");
+        titleTrackPanel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleTrackPanel.setBounds(50, 30, 400, 50);
+        trackPanel.add(titleTrackPanel);
+
+        // number of lanes slider
+        JLabel laneLabel = new JLabel("Number of lanes for the race: ");
+        JSlider sliderLanes = new JSlider(JSlider.HORIZONTAL, 2, 5, 2); 
+
+        laneLabel.setBounds(30, 80, 400, 50);
+        sliderLanes.setBounds(30, 130, 150, 50);
+
+        sliderLanes.setMinorTickSpacing(1);  
+        sliderLanes.setMajorTickSpacing(1);
+        sliderLanes.setPaintTicks(true);  
+        sliderLanes.setPaintLabels(true);  
+        sliderLanes.setSnapToTicks(true);
+
+        // number of horses slider
+        JLabel horsesLabel = new JLabel("Number of horses for the race: ");
+        JSlider sliderHorses = new JSlider(JSlider.HORIZONTAL, 2, 2, 2); 
+
+        horsesLabel.setBounds(30, 180, 400, 50);
+        sliderHorses.setBounds(30, 230, 150, 50);
+
+        sliderHorses.setMinorTickSpacing(1);  
+        sliderHorses.setMajorTickSpacing(1);
+        sliderHorses.setPaintTicks(true);  
+        sliderHorses.setPaintLabels(true);  
+        sliderHorses.setSnapToTicks(true);
+
+        // set the maximum number of horses to the number of lanes, consistency
+        sliderLanes.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int value = sliderLanes.getValue();
+                sliderHorses.setMaximum(value);
+            }
+        });
+
+        // length of track slider
+        JLabel lengthLabel = new JLabel("Length of track: ");
+        JSlider sliderLength = new JSlider(JSlider.HORIZONTAL, 10, 40, 10); 
+
+        lengthLabel.setBounds(30, 280, 400, 50);
+        sliderLength.setBounds(30, 330, 250, 50);
+
+        sliderLength.setMinorTickSpacing(5);  
+        sliderLength.setMajorTickSpacing(5);
+        sliderLength.setPaintTicks(true);  
+        sliderLength.setPaintLabels(true);  
+        sliderLength.setSnapToTicks(true);
+
+        // submit button
+        submit = new JButton("Submit"); 
+        submit.setBounds(110, 450, 100, 50);
+       
+        // add components to track panel
+        trackPanel.add(titleTrackPanel);
+        trackPanel.add(laneLabel);
+        trackPanel.add(sliderLanes);
+        trackPanel.add(horsesLabel);
+        trackPanel.add(sliderHorses);
+        trackPanel.add(lengthLabel);
+        trackPanel.add(sliderLength);
+        trackPanel.add(submit);
+
+        // add track panel to frame
+        add(trackPanel);
+
         
     }
+
+    
 }
