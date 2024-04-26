@@ -14,6 +14,7 @@ public class Horse
     private boolean hasFallen;
     private double confidence;
     private String colour;
+    private String accesory;
 
     
     
@@ -28,6 +29,7 @@ public class Horse
         this.distanceTravelled = 0;
         this.hasFallen = false;
         this.colour=null;
+        this.accesory=null;
        
     }
     
@@ -90,12 +92,20 @@ public class Horse
     }
 
    
-
     public String getColour()
     {
         return this.colour;
     }
 
+    public void setAccesory(String newAccesory)
+    {
+        this.accesory = newAccesory;
+    }
+
+    public String getAccesory()
+    {
+        return this.accesory;
+    }
     
     
     
